@@ -14,7 +14,7 @@ api:
 
 .PHONY: proto
 proto:
-	protoc -I . --micro_out=. --gogofaster_out=. proto/user.proto
+	protoc -I . --micro_out=. --gogofaster_out=. proto/account.proto
 
 .PHONY: docker
 docker:
