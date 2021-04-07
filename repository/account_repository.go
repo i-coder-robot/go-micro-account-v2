@@ -40,8 +40,8 @@ func (u AccountRepository) FindAccountByName(name string) (*model.Account, error
 }
 
 func (u AccountRepository) FindAccountById(id int64) (*model.Account, error) {
-	accout := &model.Account{}
-	return accout, u.db.First(accout, id).Error}
+	account := &model.Account{}
+	return account, u.db.First(account, id).Error
 }
 
 func (u AccountRepository) CreateAccount(account *model.Account) (int64, error) {
