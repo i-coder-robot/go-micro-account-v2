@@ -5,7 +5,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/i-coder-robot/go-micro-account-v2/config"
 	"github.com/i-coder-robot/go-micro-account-v2/handler"
-	user "github.com/i-coder-robot/go-micro-account-v2/proto"
+	account "github.com/i-coder-robot/go-micro-account-v2/proto"
 	"github.com/i-coder-robot/go-micro-account-v2/repository"
 	"github.com/i-coder-robot/go-micro-account-v2/service"
 	"github.com/jinzhu/gorm"
@@ -23,7 +23,7 @@ const (
 	DriverName = "mysql"
 	IP         = "192.168.43.254"
 	//IP         = "192.168.0.106"
-	// user:password@tcp(container-name:port)/dbname ※mysql
+	// account:password@tcp(container-name:port)/dbname ※mysql
 	// DataSourceName = "root:root@tcp(mysql-container:3306)/foods_srv?charset=utf8&parseTime=True&loc=Local"
 	DataSourceName = "root:smartwell@tcp(127.0.0.1:3306)/foods_srv?charset=utf8&parseTime=True&loc=Local"
 )
@@ -48,7 +48,7 @@ func main() {
 	opentracing.SetGlobalTracer(t)
 
 	srv := micro.NewService(
-		micro.Name("go.micro.service.user"),
+		micro.Name("go.micro.service.account"),
 		micro.Version("latest"),
 		micro.Address("127.0.0.1:8011"),
 		micro.Registry(registry),
@@ -73,12 +73,12 @@ func main() {
 	defer db.Close()
 	db.SingularTable(true)
 
-	repo := repository.NewUserInterfaceRepository(db)
+	repo := repository.NewAccountInterfaceRepository(db)
 	repo.InitTable()
-	accountSrv := service.NewUserService(repo)
+	accountSrv := service.NewAccountService(repo)
 
 	// Register handler
-	err = user.RegisterAccountHandler(srv.Server(), &handler.User{
+	err = account.RegisterAccountHandler(srv.Server(), &handler.Account{
 		AccountService: accountSrv,
 	})
 

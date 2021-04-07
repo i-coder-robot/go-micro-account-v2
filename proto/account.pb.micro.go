@@ -44,7 +44,7 @@ func NewAccountEndpoints() []*api.Endpoint {
 type AccountService interface {
 	Register(ctx context.Context, in *AccountRequest, opts ...client.CallOption) (*AccountResponse, error)
 	Login(ctx context.Context, in *AccountRequest, opts ...client.CallOption) (*AccountResponse, error)
-	GetUserInfo(ctx context.Context, in *AccountRequest, opts ...client.CallOption) (*AccountResponse, error)
+	GetAccountInfo(ctx context.Context, in *AccountRequest, opts ...client.CallOption) (*AccountResponse, error)
 }
 
 type accountService struct {
@@ -79,8 +79,8 @@ func (c *accountService) Login(ctx context.Context, in *AccountRequest, opts ...
 	return out, nil
 }
 
-func (c *accountService) GetUserInfo(ctx context.Context, in *AccountRequest, opts ...client.CallOption) (*AccountResponse, error) {
-	req := c.c.NewRequest(c.name, "Account.GetUserInfo", in)
+func (c *accountService) GetAccountInfo(ctx context.Context, in *AccountRequest, opts ...client.CallOption) (*AccountResponse, error) {
+	req := c.c.NewRequest(c.name, "Account.GetAccountInfo", in)
 	out := new(AccountResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -94,14 +94,14 @@ func (c *accountService) GetUserInfo(ctx context.Context, in *AccountRequest, op
 type AccountHandler interface {
 	Register(context.Context, *AccountRequest, *AccountResponse) error
 	Login(context.Context, *AccountRequest, *AccountResponse) error
-	GetUserInfo(context.Context, *AccountRequest, *AccountResponse) error
+	GetAccountInfo(context.Context, *AccountRequest, *AccountResponse) error
 }
 
 func RegisterAccountHandler(s server.Server, hdlr AccountHandler, opts ...server.HandlerOption) error {
 	type account interface {
 		Register(ctx context.Context, in *AccountRequest, out *AccountResponse) error
 		Login(ctx context.Context, in *AccountRequest, out *AccountResponse) error
-		GetUserInfo(ctx context.Context, in *AccountRequest, out *AccountResponse) error
+		GetAccountInfo(ctx context.Context, in *AccountRequest, out *AccountResponse) error
 	}
 	type Account struct {
 		account
@@ -122,6 +122,6 @@ func (h *accountHandler) Login(ctx context.Context, in *AccountRequest, out *Acc
 	return h.AccountHandler.Login(ctx, in, out)
 }
 
-func (h *accountHandler) GetUserInfo(ctx context.Context, in *AccountRequest, out *AccountResponse) error {
-	return h.AccountHandler.GetUserInfo(ctx, in, out)
+func (h *accountHandler) GetAccountInfo(ctx context.Context, in *AccountRequest, out *AccountResponse) error {
+	return h.AccountHandler.GetAccountInfo(ctx, in, out)
 }

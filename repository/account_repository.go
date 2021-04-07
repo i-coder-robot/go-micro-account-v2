@@ -11,21 +11,21 @@ type AccountInterfaceRepository interface {
 	FindAccountById(int642 int64) (*model.Account, error)
 	CreateAccount(*model.Account) (int64, error)
 	DeleteAccount(int64) error
-	UpdateAccount(user *model.Account) error
+	UpdateAccount(account *model.Account) error
 	FindAll() ([]model.Account, error)
 }
 
-func NewUserInterfaceRepository(db *gorm.DB) AccountInterfaceRepository {
-	return &UserRepository{
+func NewAccountInterfaceRepository(db *gorm.DB) AccountInterfaceRepository {
+	return &AccountRepository{
 		db: db,
 	}
 }
 
-type UserRepository struct {
+type AccountRepository struct {
 	db *gorm.DB
 }
 
-func (u UserRepository) InitTable() error {
+func (u AccountRepository) InitTable() error {
 	exist := u.db.HasTable(&model.Account{})
 	if exist {
 		return nil
@@ -33,29 +33,29 @@ func (u UserRepository) InitTable() error {
 	return u.db.CreateTable(&model.Account{}).Error
 }
 
-func (u UserRepository) FindAccountByName(name string) (*model.Account, error) {
-	user := &model.Account{}
-	err := u.db.Where("user_name = ?", name).Find(user).Error
-	return user, err
+func (u AccountRepository) FindAccountByName(name string) (*model.Account, error) {
+	account := &model.Account{}
+	err := u.db.Where("account_name = ?", name).Find(account).Error
+	return account, err
 }
 
-func (u UserRepository) FindAccountById(id int64) (*model.Account, error) {
-	user := &model.Account{}
-	return user, u.db.First(user, id).Error
+func (u AccountRepository) FindAccountById(id int64) (*model.Account, error) {
+	accout := &model.Account{}
+	return accout, u.db.First(accout, id).Error}
 }
 
-func (u UserRepository) CreateAccount(user *model.Account) (int64, error) {
-	return user.ID, u.db.Create(user).Error
+func (u AccountRepository) CreateAccount(account *model.Account) (int64, error) {
+	return account.ID, u.db.Create(account).Error
 }
 
-func (u UserRepository) DeleteAccount(id int64) error {
+func (u AccountRepository) DeleteAccount(id int64) error {
 	return u.db.Where("id = ?", id).Delete(&model.Account{}).Error
 }
 
-func (u UserRepository) UpdateAccount(user *model.Account) error {
-	return u.db.Model(user).Update(user).Error
+func (u AccountRepository) UpdateAccount(account *model.Account) error {
+	return u.db.Model(account).Update(account).Error
 }
 
-func (u UserRepository) FindAll() (users []model.Account, err error) {
-	return users, u.db.Find(&users).Error
+func (u AccountRepository) FindAll() (accounts []model.Account, err error) {
+	return accounts, u.db.Find(&accounts).Error
 }

@@ -1,1 +1,1 @@
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o user *.go
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o account *.go

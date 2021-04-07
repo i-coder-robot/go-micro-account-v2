@@ -1,3 +1,3 @@
 FROM alpine
-ADD user /user
-ENTRYPOINT [ "/user" ]
+ADD account /account
+ENTRYPOINT [ "/account" ]

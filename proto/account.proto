@@ -7,7 +7,7 @@ option go_package = "proto;account";
 service Account {
 	rpc Register (AccountRequest) returns (AccountResponse) {}
 	rpc Login (AccountRequest) returns (AccountResponse) {}
-	rpc GetUserInfo (AccountRequest) returns (AccountResponse) {}
+	rpc GetAccountInfo (AccountRequest) returns (AccountResponse) {}
 }
 
 message AccountRequest {
