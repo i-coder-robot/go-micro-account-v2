@@ -1,8 +1,8 @@
 package model
 
-type User struct {
+type Account struct {
 	ID          int64  `gorm:"primary_key;not_null;auto_increment"`
-	UserName    string `gorm："unique_index;not_null"`
+	AccountName string `gorm："unique_index;not_null"`
 	FirstName   string
 	Md5Password string
 }

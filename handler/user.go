@@ -2,22 +2,22 @@ package handler
 
 import (
 	"context"
-	"github.com/i-coder-robot/go-micro-user-v2/model"
-	user "github.com/i-coder-robot/go-micro-user-v2/proto"
-	"github.com/i-coder-robot/go-micro-user-v2/service"
+	"github.com/i-coder-robot/go-micro-account-v2/model"
+	account "github.com/i-coder-robot/go-micro-account-v2/proto"
+	"github.com/i-coder-robot/go-micro-account-v2/service"
 )
 
 type User struct {
-	UserService service.UserInterfaceService
+	AccountService service.AccountInterfaceService
 }
 
-func (u *User) Register(ctx context.Context, userRequest *user.UserRequest, response *user.UserResponse) error {
-	userRegister := &model.User{
-		UserName:    userRequest.UserName,
+func (u *User) Register(ctx context.Context, userRequest *account.AccountRequest, response *account.AccountResponse) error {
+	userRegister := &model.Account{
+		AccountName:    userRequest.AccountName,
 		FirstName:   userRequest.FirstName,
 		Md5Password: userRequest.Pwd,
 	}
-	_, err := u.UserService.AddUser(userRegister)
+	_, err := u.AccountService.AddAccount(userRegister)
 	if err != nil {
 		return err
 	}
@@ -25,8 +25,8 @@ func (u *User) Register(ctx context.Context, userRequest *user.UserRequest, resp
 	return nil
 }
 
-func (u *User) GetUserInfo(ctx context.Context, userRequest *user.UserRequest, response *user.UserResponse) error {
-	ok, err := u.UserService.CheckPassword(userRequest.UserName, userRequest.Pwd)
+func (u *User) GetUserInfo(ctx context.Context, userRequest *account.AccountRequest, response *account.AccountResponse) error {
+	ok, err := u.AccountService.CheckPassword(userRequest.AccountName, userRequest.Pwd)
 	if err != nil {
 		return err
 	}
@@ -34,8 +34,8 @@ func (u *User) GetUserInfo(ctx context.Context, userRequest *user.UserRequest, r
 	return nil
 }
 
-func (u *User) Login(ctx context.Context, userRequest *user.UserRequest, response *user.UserResponse) error {
-	info, err := u.UserService.FindUserByName(userRequest.UserName)
+func (u *User) Login(ctx context.Context, userRequest *account.AccountRequest, response *account.AccountResponse) error {
+	info, err := u.AccountService.FindAccountByName(userRequest.AccountName)
 	if err != nil {
 		return err
 	}
@@ -45,10 +45,10 @@ func (u *User) Login(ctx context.Context, userRequest *user.UserRequest, respons
 	return nil
 }
 
-func convertUser4Response(userModel *model.User) *user.UserResponse {
-	res := &user.UserResponse{}
-	res.UserName = userModel.UserName
-	res.FirstName = userModel.FirstName
-	res.UserId = userModel.ID
+func convertUser4Response(m *model.Account) *account.AccountResponse {
+	res := &account.AccountResponse{}
+	res.AccountName = m.AccountName
+	res.FirstName = m.FirstName
+	res.UserId = m.ID
 	return res
 }

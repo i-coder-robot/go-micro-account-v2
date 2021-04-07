@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/i-coder-robot/go-micro-user-v2/config"
-	"github.com/i-coder-robot/go-micro-user-v2/handler"
-	user "github.com/i-coder-robot/go-micro-user-v2/proto"
-	"github.com/i-coder-robot/go-micro-user-v2/repository"
-	"github.com/i-coder-robot/go-micro-user-v2/service"
+	"github.com/i-coder-robot/go-micro-account-v2/config"
+	"github.com/i-coder-robot/go-micro-account-v2/handler"
+	user "github.com/i-coder-robot/go-micro-account-v2/proto"
+	"github.com/i-coder-robot/go-micro-account-v2/repository"
+	"github.com/i-coder-robot/go-micro-account-v2/service"
 	"github.com/jinzhu/gorm"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/logger"
@@ -40,7 +40,7 @@ func main() {
 		}
 	})
 	//链路追踪
-	t, io, err := config.NewTracer("go.micro.service.user", "localhost:6831")
+	t, io, err := config.NewTracer("go.micro.service.account", "localhost:6831")
 	if err != nil {
 		log.Error(err)
 	}
@@ -50,7 +50,7 @@ func main() {
 	srv := micro.NewService(
 		micro.Name("go.micro.service.user"),
 		micro.Version("latest"),
-		micro.Address("127.0.0.1:8002"),
+		micro.Address("127.0.0.1:8011"),
 		micro.Registry(registry),
 		micro.WrapHandler(opentracing2.NewHandlerWrapper(opentracing.GlobalTracer())),
 	)
@@ -75,11 +75,11 @@ func main() {
 
 	repo := repository.NewUserInterfaceRepository(db)
 	repo.InitTable()
-	userSrv := service.NewUserService(repo)
+	accountSrv := service.NewUserService(repo)
 
 	// Register handler
-	err = user.RegisterUserHandler(srv.Server(), &handler.User{
-		UserService: userSrv,
+	err = user.RegisterAccountHandler(srv.Server(), &handler.User{
+		AccountService: accountSrv,
 	})
 
 	if err != nil {

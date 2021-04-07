@@ -11,14 +11,14 @@ service Account {
 }
 
 message AccountRequest {
-	string UserName = 1;
+	string AccountName = 1;
 	string FirstName =2;
 	string pwd = 3;
 }
 
 message AccountResponse {
 	int64 UserId =1;
-	string UserName=2;
+	string AccountName=2;
 	string FirstName=3;
 	string Message = 4;
 	bool IsOk = 5;
