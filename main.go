@@ -86,7 +86,7 @@ func main() {
 		panic(err)
 	}
 
-	// Run userService
+	// Run Service
 	if err := srv.Run(); err != nil {
 		logger.Fatal(err)
 	}

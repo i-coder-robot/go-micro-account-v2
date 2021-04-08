@@ -18,7 +18,7 @@ proto:
 
 .PHONY: docker
 docker:
-	docker build -f Dockerfile  -t user .
+	docker build -f Dockerfile  -t account .
 .PHONY: run
 run:
 	go run main.go

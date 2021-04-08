@@ -17,7 +17,7 @@ message AccountRequest {
 }
 
 message AccountResponse {
-	int64 UserId =1;
+	int64 AccountId =1;
 	string AccountName=2;
 	string FirstName=3;
 	string Message = 4;
